@@ -1,24 +1,25 @@
 from ultralytics import YOLO
-from datetime import datetime
-
-
+from config import PROJECT, EPOCHS, FREEZE, RESUME, CACHE, BATCH_SIZE, IMG_SIZE, DATA, WEIGHTS, DEVICE, TIME_OUT, VERBOSE, PLOTS, PATIENCE, SAVE_PERIOD, NAME
 
 # Load a model
 
-model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
+model = YOLO(WEIGHTS)  # load a pretrained model (recommended for training)
 
 model.train(
-    data="config.yaml", 
-    time= None,
-    epochs=3,
-    batch=16,
-    patience=3,
-    imsz=640,
-    save_period=1,
-    cache=True,
-    device="cpu",
-    project="runs/train/",
-    name=datetime.now().strftime("%Y-%m-%d_%H:%M:%S"),
-    verbose=True,
-    plots=True
-)  
+    data=DATA,
+    time=TIME_OUT,
+    epochs=EPOCHS,
+    batch=BATCH_SIZE,
+    patience=PATIENCE,
+    imsz=IMG_SIZE,
+    save_period=SAVE_PERIOD,
+    cache=CACHE,
+    device=DEVICE,
+    project=PROJECT,
+    name=NAME,
+    verbose=VERBOSE,
+    plots=PLOTS,  
+    resume=RESUME,
+    freeze=FREEZE
+) 
+
