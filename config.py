@@ -1,24 +1,33 @@
 import os
 import datetime
 
-
+WEIGHTS = os.getenv('WEIGHTS')
+DATA = os.getenv('DATA')
+EPOCHS = int(os.getenv('EPOCHS'))
+TIME_OUT = int(os.getenv('TIME_OUT'))
 LEARNING_RATE = float(os.getenv('LEARNING_RATE'))
 
-WEIGHTS = os.getenv('WEIGHTS')
 RESUME = bool(os.getenv('RESUME'))
 DEVICE = os.getenv('DEVICE')
-DATA = os.getenv('DATA')
+
 IMG_SIZE = int(os.getenv('IMG_SIZE'))
-EPOCHS=int(os.getenv('EPOCHS'))
+
 BATCH_SIZE = int(os.getenv('BATCH_SIZE'))
 PATIENCE = int(os.getenv('PATIENCE'))
 SAVE_PERIOD = int(os.getenv('SAVE_PERIOD')) 
-TIME_OUT = int(os.getenv('TIME_OUT'))
+
 VERBOSE = bool(os.getenv('VERBOSE'))
 PLOTS = bool(os.getenv('PLOTS'))
 FREEZE = None if os.getenv('FREEZE') == 0 else int(os.getenv('FREEZE'))
-CACHE = False 
+LOGGER = os.getenv('LOGGER')
+INITIAL_LEARNING_RATE = float(os.getenv('INITIAL_LEARNING_RATE'))
+FINAL_LEARNING_RATE = float(os.getenv('FINAL_LEARNING_RATE'))
+PROFILE = bool(os.getenv('PROFILE'))
+
+
 match os.getenv('CACHE'):
+    case "0":
+        CACHE = False
     case "1":
         CACHE = True
     case "ram":
@@ -28,7 +37,7 @@ match os.getenv('CACHE'):
     case _:
         raise ValueError("Invalid value for env varable CACHE")
 
-PROJECT="runs/train/",
+
 NAME=datetime.now().strftime("%Y-%m-%d_%H:%M:%S"),
 
 # config logger 
