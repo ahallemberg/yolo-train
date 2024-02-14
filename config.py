@@ -1,29 +1,13 @@
 import os
-import datetime
 
 WEIGHTS = os.getenv('WEIGHTS')
 DATA = os.getenv('DATA')
 EPOCHS = int(os.getenv('EPOCHS'))
-TIME_OUT = int(os.getenv('TIME_OUT'))
-LEARNING_RATE = float(os.getenv('LEARNING_RATE'))
-
-RESUME = bool(os.getenv('RESUME'))
-DEVICE = os.getenv('DEVICE')
-
-IMG_SIZE = int(os.getenv('IMG_SIZE'))
-
-BATCH_SIZE = int(os.getenv('BATCH_SIZE'))
+TIMEOUT = int(os.getenv('TIMEOUT'))
 PATIENCE = int(os.getenv('PATIENCE'))
+BATCH_SIZE = int(os.getenv('BATCH_SIZE'))
+IMG_SIZE = int(os.getenv('IMG_SIZE'))
 SAVE_PERIOD = int(os.getenv('SAVE_PERIOD')) 
-
-VERBOSE = bool(os.getenv('VERBOSE'))
-PLOTS = bool(os.getenv('PLOTS'))
-FREEZE = None if os.getenv('FREEZE') == 0 else int(os.getenv('FREEZE'))
-LOGGER = os.getenv('LOGGER')
-INITIAL_LEARNING_RATE = float(os.getenv('INITIAL_LEARNING_RATE'))
-FINAL_LEARNING_RATE = float(os.getenv('FINAL_LEARNING_RATE'))
-PROFILE = bool(os.getenv('PROFILE'))
-
 
 match os.getenv('CACHE'):
     case "0":
@@ -37,8 +21,42 @@ match os.getenv('CACHE'):
     case _:
         raise ValueError("Invalid value for env varable CACHE")
 
-
-NAME=datetime.now().strftime("%Y-%m-%d_%H:%M:%S"),
+DEVICE = os.getenv('DEVICE')
+WORKERS = int(os.getenv('WORKERS'))
+PROJECT = os.getenv('PROJECT')
+NAME = os.getenv('NAME')
+EXIST_OK = bool(os.getenv('EXIST_OK'))
+OPTIMIZER = os.getenv('OPTIMIZER')
+VERBOSE = bool(os.getenv('VERBOSE'))
+SEED = int(os.getenv('SEED'))
+DETERMINISTIC = bool(os.getenv('DETERMINISTIC'))
+COSINE_LEARNING_RATE = bool(os.getenv('COSINE_LEARNING_RATE'))
+CLOSE_MOSAIC = int(os.getenv('CLOSE_MOSAIC'))
+RESUME = bool(os.getenv('RESUME'))
+AUTOMATIC_MIXED_PRECISION = bool(os.getenv('AUTOMATIC_MIXED_PRECISION'))
+FRACTION = float(os.getenv('FRACTION'))
+PROFILE = bool(os.getenv('PROFILE'))
+FREEZE = None if os.getenv('FREEZE') == 0 else int(os.getenv('FREEZE'))
+INITIAL_LEARNING_RATE = float(os.getenv('INITIAL_LEARNING_RATE'))
+FINAL_LEARNING_RATE= float(os.getenv('FINAL_LEARNING_RATE'))
+MOMENTUM = float(os.getenv('MOMENTUM'))
+WEIGHT_DECAY= float(os.getenv('WEIGHT_DECAY'))
+WARMUP_EPOCHS = int(os.getenv('WARMUP_EPOCHS'))
+WARMUP_MOMENTUM = float(os.getenv('WARMUP_MOMENTUM'))
+WARMUP_BIAS_LEARNING_RATE = float(os.getenv('WARMUP_BIAS_LEARNING_RATE'))
+BOX_LOSS_WEIGHT = float(os.getenv('BOX_LOSS_WEIGHT'))
+CLASSIFICATION_LOSS_WEIGHT = float(os.getenv('CLASSIFICATION_LOSS_WEIGHT'))
+DISTRIBUTED_FOCAL_LOSS_WEIGHT = float(os.getenv('DISTRIBUTED_FOCAL_LOSS_WEIGHT'))
+POSE_LOSS_WEIGHT = float(os.getenv('POSE_LOSS_WEIGHT'))
+KEYPOINT_OBJECTNESS_LOSS_WEIGHT = float(os.getenv('KEYPOINT_OBJECTNESS_LOSS_WEIGHT'))
+LABEL_SMOOTHING = float(os.getenv('LABEL_SMOOTHING'))
+NOMINAL_BATCH_SIZE = int(os.getenv('NOMINAL_BATCH_SIZE'))
+OVERLAP_MASK = bool(os.getenv('OVERLAP_MASK'))
+MASK_RATIO = int(os.getenv('MASK_RATIO'))
+DROPOUT = float(os.getenv('DROPOUT'))
+VALIDATE = bool(os.getenv('VALIDATE'))
+PLOTS = bool(os.getenv('PLOTS'))
+LOGGER = os.getenv('LOGGER')
 
 # config logger 
 # clearml 

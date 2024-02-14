@@ -1,40 +1,40 @@
-import os, subprocess
+import subprocess
 from  dotenv import load_dotenv
-from abc import abstractmethod, ABC
-from config import LOGGER, NAME, PROJECT
+from abc import abstractmethod
+from config import LOGGER, PROJECT, NAME
+
 import clearml, comet_ml 
 
 
-class Logger(ABC):
+class Logger:
+    def __init__(self):
+        load_dotenv()
+
     @abstractmethod
     def setup(self): ...
 
-    def _load_dotenv(self):
-        load_dotenv()
-
 class ClearMLLogger(Logger): 
-    def setup(self):
-        ## load all the env variables
-        self._load_dotenv()
+    def __init__(self):
+        super().__init__()
 
+    def setup(self):
         subprocess.run("clearml-init", shell=True) 
         clearml.Task.init(project_name=PROJECT, task_name=NAME)
-        print("CLEARML")
 
 class CometLogger(Logger):
-    def setup(self):
-        self._load_dotenv()
-
-        comet_ml.init()
-        print("COMET")
-
+    def __init__(self):
+        super().__init__()
         
-def get_logger():
+    def setup(self):
+        comet_ml.init(project_name=PROJECT, workspace=NAME)
+    
+        
+def get_logger() -> Logger | None:
     match LOGGER:
-        case "CLEARML":
+        case "CLEAR_ML":
             return ClearMLLogger()
 
-        case "COMET":
+        case "COMET_ML":
             return CometLogger()
 
         case "0":
