@@ -27,6 +27,7 @@ class CometLogger(Logger):
         
     def setup(self):
         comet_ml.init(project_name=PROJECT, workspace=NAME)
+        comet_ml.task
     
         
 def get_logger() -> Logger | None:
@@ -39,3 +40,5 @@ def get_logger() -> Logger | None:
 
         case "0":
             return None
+        case _:
+            raise ValueError(f"Invalid value for env varable LOGGER: {LOGGER}")

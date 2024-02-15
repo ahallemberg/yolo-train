@@ -1,5 +1,5 @@
 # YOLO Training Parameters Documentation
-
+# source https://docs.ultralytics.com/modes/train/#arguments for valid arguments for training
 This document outlines the various parameters available for training a YOLO model, including their default values and descriptions.
 
 ## Parameters

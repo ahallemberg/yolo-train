@@ -1,5 +1,4 @@
 #!/bin/bash
-# check https://docs.ultralytics.com/modes/train/#arguments for valid arguments for training
 
 export WEIGHTS="models/yolov8n.pt"
 export DATA="data.yaml"
@@ -26,6 +25,7 @@ export AUTOMATIC_MIXED_PRECISION=1
 export FRACTION=1.0
 export PROFILE=0 # Enables profiling of ONNX and TensorRT speeds during training, useful for optimizing model deployment.
 export FREEZE=0
+export FREEZE_ON=0
 export INITIAL_LEARNING_RATE=0.01
 export FINAL_LEARNING_RATE=0.01 # Final learning rate as a fraction of the initial rate = (`INITIAL_LEARNING_RATE` * `FINAL_LEARNING_RATE`), used in conjunction with schedulers to adjust the learning rate over time.
 export MOMENTUM=0.937
@@ -45,4 +45,4 @@ export MASK_RATIO=4
 export DROPOUT=0.0
 export VALIDATE=1
 export PLOTS=1
-export LOGGER=0 # 0, COMET_ML or CLEAR_ML
+export LOGGER=CLEAR_ML # 0, COMET_ML or CLEAR_ML

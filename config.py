@@ -1,15 +1,23 @@
 import os
 
 WEIGHTS = os.getenv('WEIGHTS')
+if not os.path.isfile(WEIGHTS): raise ValueError(f"Invalid value for env varable WEIGHTS: {WEIGHTS}. File not found")
+
 DATA = os.getenv('DATA')
+if not os.path.isfile(DATA): raise ValueError(f"Invalid value for env varable DATA: {DATA}. File not found")
+
 EPOCHS = int(os.getenv('EPOCHS'))
+
 TIMEOUT = int(os.getenv('TIMEOUT'))
+if TIMEOUT == 0: TIMEOUT = None
+
 PATIENCE = int(os.getenv('PATIENCE'))
 BATCH_SIZE = int(os.getenv('BATCH_SIZE'))
 IMG_SIZE = int(os.getenv('IMG_SIZE'))
 SAVE_PERIOD = int(os.getenv('SAVE_PERIOD')) 
 
-match os.getenv('CACHE'):
+_cache = os.getenv('CACHE')
+match _cache:
     case "0":
         CACHE = False
     case "1":
@@ -19,24 +27,54 @@ match os.getenv('CACHE'):
     case "disk":
         CACHE = "disk"
     case _:
-        raise ValueError("Invalid value for env varable CACHE")
+        raise ValueError(f"Invalid value for env varable CACHE: {_cache}")
 
-DEVICE = os.getenv('DEVICE')
+_device = os.getenv('DEVICE')
+if _device == "cpu":
+    DEVICE = "cpu"
+elif _device == "mps":
+    DEVICE = "mps"
+else:
+    try:
+        _targ_dev = ""
+        _device_list = _device.split(",")
+        for _dvs in _device_list:
+            _dvs = _dvs.strip()
+            _targ_dev += f"{_dvs},"
+        
+        DEVICE = _targ_dev 
+
+    except:
+        raise ValueError(f"Invalid value for env varable DEVICE: {_device}")
+
 WORKERS = int(os.getenv('WORKERS'))
 PROJECT = os.getenv('PROJECT')
 NAME = os.getenv('NAME')
 EXIST_OK = bool(os.getenv('EXIST_OK'))
+
 OPTIMIZER = os.getenv('OPTIMIZER')
 VERBOSE = bool(os.getenv('VERBOSE'))
 SEED = int(os.getenv('SEED'))
 DETERMINISTIC = bool(os.getenv('DETERMINISTIC'))
 COSINE_LEARNING_RATE = bool(os.getenv('COSINE_LEARNING_RATE'))
 CLOSE_MOSAIC = int(os.getenv('CLOSE_MOSAIC'))
+
 RESUME = bool(os.getenv('RESUME'))
 AUTOMATIC_MIXED_PRECISION = bool(os.getenv('AUTOMATIC_MIXED_PRECISION'))
 FRACTION = float(os.getenv('FRACTION'))
+
 PROFILE = bool(os.getenv('PROFILE'))
-FREEZE = None if os.getenv('FREEZE') == 0 else int(os.getenv('FREEZE'))
+
+if os.getenv('FREEZE_ON') == 1:
+    _freeze = os.getenv('FREEZE')
+    if len(_freeze.split(",")) > 1:
+        FREEZE = tuple(map(int, _freeze.split(",")))
+        FREEZE = tuple(map(int, _freeze.split(",")))
+    FREEZE = int(os.getenv('FREEZE'))
+
+else:
+    FREEZE = None
+
 INITIAL_LEARNING_RATE = float(os.getenv('INITIAL_LEARNING_RATE'))
 FINAL_LEARNING_RATE= float(os.getenv('FINAL_LEARNING_RATE'))
 MOMENTUM = float(os.getenv('MOMENTUM'))
@@ -57,7 +95,3 @@ DROPOUT = float(os.getenv('DROPOUT'))
 VALIDATE = bool(os.getenv('VALIDATE'))
 PLOTS = bool(os.getenv('PLOTS'))
 LOGGER = os.getenv('LOGGER')
-
-# config logger 
-# clearml 
-# comet

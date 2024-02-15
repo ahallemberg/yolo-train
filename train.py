@@ -1,6 +1,10 @@
+import os 
 from ultralytics import YOLO
 from config import VALIDATE, DROPOUT, MASK_RATIO, OVERLAP_MASK, NOMINAL_BATCH_SIZE, LABEL_SMOOTHING, KEYPOINT_OBJECTNESS_LOSS_WEIGHT, POSE_LOSS_WEIGHT, DISTRIBUTED_FOCAL_LOSS_WEIGHT, CLASSIFICATION_LOSS_WEIGHT, BOX_LOSS_WEIGHT, WARMUP_BIAS_LEARNING_RATE, WARMUP_MOMENTUM, WARMUP_EPOCHS, WEIGHT_DECAY, MOMENTUM, PROFILE, INITIAL_LEARNING_RATE, FINAL_LEARNING_RATE, FRACTION, AUTOMATIC_MIXED_PRECISION, CLOSE_MOSAIC, COSINE_LEARNING_RATE, DETERMINISTIC, SEED,OPTIMIZER, EXIST_OK, WORKERS,PROJECT, EPOCHS, FREEZE, RESUME, CACHE, BATCH_SIZE, IMG_SIZE, DATA, WEIGHTS, DEVICE, TIMEOUT, VERBOSE, PLOTS, PATIENCE, SAVE_PERIOD, NAME, INITIAL_LEARNING_RATE, FINAL_LEARNING_RATE
 from logger import get_logger
+
+# setup environment
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # setup logger 
 logger = get_logger()
@@ -10,6 +14,7 @@ if logger: logger.setup()
 # Load a model
 model = YOLO(WEIGHTS)  
 
+model.to()
 model.train(
     save=True, 
     save_json=True,
@@ -23,7 +28,7 @@ model.train(
     cache=CACHE,
     device=DEVICE,
     workers=WORKERS,
-    project=PROJECT,
+    project=PROJECT, 
     name=NAME,
     exist_ok=EXIST_OK,
     optimizer=OPTIMIZER, 
@@ -56,5 +61,4 @@ model.train(
     dropout=DROPOUT,
     val=VALIDATE,
     plots=PLOTS
-) 
-
+)
