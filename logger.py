@@ -1,40 +1,37 @@
 from  dotenv import load_dotenv
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from config import LOGGER, PROJECT, NAME
 
-import clearml, comet_ml 
-
-
-class Logger:
-    def __init__(self):
-        load_dotenv()
-
+class Logger(ABC):
     @abstractmethod
     def setup(self): ...
 
 class ClearMLLogger(Logger): 
-    def __init__(self):
-        super().__init__()
-
+    def __init__(self, lib):
+        self.lib = lib
     def setup(self):
-        task = clearml.Task.init(project_name=PROJECT, task_name=NAME)
+        self.lib.Task.init(project_name=PROJECT, task_name=NAME)
 
 class CometLogger(Logger):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, lib):
+        self.lib = lib
+        load_dotenv()
         
     def setup(self):
-        comet_ml.init(project_name=PROJECT, workspace=NAME)
+        self.lib.init(project_name=PROJECT, workspace=NAME)
+
     
         
 def get_logger() -> Logger | None:
     match LOGGER:
         case "CLEAR_ML":
-            return ClearMLLogger()
+            import clearml
+            return ClearMLLogger(clearml)
 
         case "COMET_ML":
-            return CometLogger()
+            import comet_ml 
+            return CometLogger(comet_ml)
 
         case "0":
             return None
