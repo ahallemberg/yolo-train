@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export WEIGHTS="models/yolov8n.pt"
+export WEIGHTS="./models/yolov8n.pt"
 export DATA="data.yaml"
 export EPOCHS=50
 export TIMEOUT=1 
@@ -45,4 +45,5 @@ export MASK_RATIO=4
 export DROPOUT=0.0
 export VALIDATE=1
 export PLOTS=1
-export LOGGER=CLEAR_ML # 0, COMET_ML or CLEAR_ML
+export LOGGER=0 # 0, COMET_ML or CLEAR_ML
+

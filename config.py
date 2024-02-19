@@ -1,10 +1,10 @@
 import os
 
 WEIGHTS = os.getenv('WEIGHTS')
-if not os.path.isfile(WEIGHTS): raise ValueError(f"Invalid value for env varable WEIGHTS: {WEIGHTS}. File not found")
+if not os.path.exists(WEIGHTS): raise ValueError(f"Invalid value for env varable WEIGHTS: {WEIGHTS}. File not found")
 
 DATA = os.getenv('DATA')
-if not os.path.isfile(DATA): raise ValueError(f"Invalid value for env varable DATA: {DATA}. File not found")
+if not os.path.exists(DATA): raise ValueError(f"Invalid value for env varable DATA: {DATA}. File not found")
 
 EPOCHS = int(os.getenv('EPOCHS'))
 

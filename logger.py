@@ -1,5 +1,5 @@
-import subprocess
 from  dotenv import load_dotenv
+
 from abc import abstractmethod
 from config import LOGGER, PROJECT, NAME
 
@@ -18,8 +18,7 @@ class ClearMLLogger(Logger):
         super().__init__()
 
     def setup(self):
-        subprocess.run("clearml-init", shell=True) 
-        clearml.Task.init(project_name=PROJECT, task_name=NAME)
+        task = clearml.Task.init(project_name=PROJECT, task_name=NAME)
 
 class CometLogger(Logger):
     def __init__(self):
@@ -27,7 +26,6 @@ class CometLogger(Logger):
         
     def setup(self):
         comet_ml.init(project_name=PROJECT, workspace=NAME)
-        comet_ml.task
     
         
 def get_logger() -> Logger | None:

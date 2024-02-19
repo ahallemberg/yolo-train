@@ -1,3 +1,3 @@
 #!/bin/bash
-source config.sh
+source setup_env.sh
 python3 train.py
