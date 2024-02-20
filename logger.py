@@ -1,17 +1,23 @@
 from  dotenv import load_dotenv
 
 from abc import ABC, abstractmethod
-from config import LOGGER, PROJECT, NAME
+from config import LOGGER, NAME, ID
 
 class Logger(ABC):
     @abstractmethod
     def setup(self): ...
+    
+    @abstractmethod
+    def connect(self, args: dict): ...
 
 class ClearMLLogger(Logger): 
-    def __init__(self, lib):
-        self.lib = lib
+    def __init__(self, task_class):
+        self.task_class = task_class
     def setup(self):
-        self.lib.Task.init(project_name=PROJECT, task_name=NAME)
+        self.task = self.task_class.init(project_name=NAME+ID, task_name=NAME)
+    
+    def connect(self, args: dict):
+        self.task.connect(args)
 
 class CometLogger(Logger):
     def __init__(self, lib):
@@ -19,15 +25,17 @@ class CometLogger(Logger):
         load_dotenv()
         
     def setup(self):
-        self.lib.init(project_name=PROJECT, workspace=NAME)
+        self.lib.init(project_name=NAME+ID)
+        self.experiment = self.lib.Experiment(project_name=NAME+ID)
 
-    
+    def connect(self, args: dict):
+        self.experiment.log_parameters(args)
         
 def get_logger() -> Logger | None:
     match LOGGER:
         case "CLEAR_ML":
-            import clearml
-            return ClearMLLogger(clearml)
+            from clearml import Task
+            return ClearMLLogger(Task)
 
         case "COMET_ML":
             import comet_ml 
