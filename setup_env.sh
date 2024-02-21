@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source config.sh
+source "${PROJECT_DIR}/config.sh"
 
 # check if ultrralytics is installed
 if ! [ -x "$(command -v ultralytics)" ]; then
@@ -8,6 +8,11 @@ if ! [ -x "$(command -v ultralytics)" ]; then
     python3 -m pip install ultralytics
 fi 
 
+# Check if python-dotenv is installed
+if ! python3 -c "import dotenv" 2>/dev/null; then
+    echo "python-dotenv is not installed. Installing..."
+    python3 -m pip install python-dotenv
+fi
 # check if logger is CLEAR_ML
 if [ "$LOGGER" = "CLEAR_ML" ]; then
     # check if clearml is already configured

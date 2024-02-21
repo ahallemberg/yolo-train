@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export ID=$(openssl rand -hex 16)
-export WEIGHTS="./models/yolov8n.pt"
-export DATA="./dataset/data.yaml"
+export WEIGHTS="${PROJECT_DIR}/models/yolov8m.pt"
+export DATA="${PROJECT_DIR}/datasets/data.yaml"
 export EPOCHS=5
 export TIMEOUT=0 # if not 0, will override EPOCHS and train for number of hours.
 export PATIENCE=5
