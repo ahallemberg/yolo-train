@@ -31,7 +31,7 @@ export INITIAL_LEARNING_RATE=0.01
 export FINAL_LEARNING_RATE=0.01 # Final learning rate as a fraction of the initial rate = (`INITIAL_LEARNING_RATE` * `FINAL_LEARNING_RATE`), used in conjunction with schedulers to adjust the learning rate over time.
 export MOMENTUM=0.937
 export WEIGHT_DECAY=0.0005
-export WARMUP_EPOCHS=1
+export WARMUP_EPOCHS=3
 export WARMUP_MOMENTUM=0.8
 export WARMUP_BIAS_LEARNING_RATE=0.1
 export BOX_LOSS_WEIGHT=7.5
