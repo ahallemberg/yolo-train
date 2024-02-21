@@ -1,22 +1,14 @@
 import os 
 from ultralytics import YOLO
-from config import WEIGHTS, DATA, EPOCHS, TIMEOUT, PATIENCE, BATCH_SIZE, IMG_SIZE, SAVE_PERIOD, CACHE, DEVICE, WORKERS, PROJECT, NAME, EXIST_OK, OPTIMIZER, VERBOSE, SEED, COSINE_LEARNING_RATE, CLOSE_MOSAIC, RESUME, AUTOMATIC_MIXED_PRECISION, FRACTION, PROFILE, FREEZE, INITIAL_LEARNING_RATE, FINAL_LEARNING_RATE, MOMENTUM, WEIGHT_DECAY, WARMUP_EPOCHS, WARMUP_MOMENTUM, WARMUP_BIAS_LEARNING_RATE, BOX_LOSS_WEIGHT, CLASSIFICATION_LOSS_WEIGHT, DISTRIBUTED_FOCAL_LOSS_WEIGHT, POSE_LOSS_WEIGHT, KEYPOINT_OBJECTNESS_LOSS_WEIGHT, LABEL_SMOOTHING, NOMINAL_BATCH_SIZE, OVERLAP_MASK, MASK_RATIO, DROPOUT, VALIDATE, PLOTS, DETERMINISTIC
+from config import ID, WEIGHTS, DATA, EPOCHS, TIMEOUT, PATIENCE, BATCH_SIZE, IMG_SIZE, SAVE_PERIOD, CACHE, DEVICE, WORKERS, PROJECT, NAME, EXIST_OK, OPTIMIZER, VERBOSE, SEED, COSINE_LEARNING_RATE, CLOSE_MOSAIC, RESUME, AUTOMATIC_MIXED_PRECISION, FRACTION, PROFILE, FREEZE, INITIAL_LEARNING_RATE, FINAL_LEARNING_RATE, MOMENTUM, WEIGHT_DECAY, WARMUP_EPOCHS, WARMUP_MOMENTUM, WARMUP_BIAS_LEARNING_RATE, BOX_LOSS_WEIGHT, CLASSIFICATION_LOSS_WEIGHT, DISTRIBUTED_FOCAL_LOSS_WEIGHT, POSE_LOSS_WEIGHT, KEYPOINT_OBJECTNESS_LOSS_WEIGHT, LABEL_SMOOTHING, NOMINAL_BATCH_SIZE, OVERLAP_MASK, MASK_RATIO, DROPOUT, VALIDATE, PLOTS, DETERMINISTIC
 from logger import get_logger
 
 def main():
     # setup environment
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-    # setup logger 
-    logger = get_logger()
-    if logger: logger.setup()
-
-
-    # Load a model
-    model = YOLO(WEIGHTS)  
-
-    # train model with the configurations
-    model.train(
+    
+    # arguments
+    args = dict(
         save=True, 
         save_json=True,
         data=DATA,
@@ -29,7 +21,7 @@ def main():
         cache=CACHE,
         device=DEVICE,
         workers=WORKERS,
-        project=PROJECT, 
+        project=PROJECT+ID, 
         name=NAME,
         exist_ok=EXIST_OK,
         optimizer=OPTIMIZER, 
@@ -62,7 +54,19 @@ def main():
         dropout=DROPOUT,
         val=VALIDATE,
         plots=PLOTS
-    )
+        )
+  
+    # setup logger 
+    logger = get_logger()
+    if logger: 
+        logger.setup()
+        logger.connect(args)
+
+    # Load a model
+    model = YOLO(WEIGHTS)  
+
+    # train model with the configurations
+    model.train(**args)
 
 if __name__ == "__main__": 
     main()

@@ -1,16 +1,17 @@
 #!/bin/bash
 
+export ID=$(openssl rand -hex 16)
 export WEIGHTS="./models/yolov8n.pt"
-export DATA="data.yaml"
-export EPOCHS=50
-export TIMEOUT=1
-export PATIENCE=50
+export DATA="./dataset/data.yaml"
+export EPOCHS=5
+export TIMEOUT=0 # if not 0, will override EPOCHS and train for number of hours.
+export PATIENCE=5
 export BATCH_SIZE=16
 export IMG_SIZE=640
 export SAVE_PERIOD=1
 export CACHE=ram 
 export DEVICE=cpu
-export WORKERS=8
+export WORKERS=12
 export PROJECT="runs/train/"
 export NAME="exp" 
 export EXIST_OK=0
@@ -30,7 +31,7 @@ export INITIAL_LEARNING_RATE=0.01
 export FINAL_LEARNING_RATE=0.01 # Final learning rate as a fraction of the initial rate = (`INITIAL_LEARNING_RATE` * `FINAL_LEARNING_RATE`), used in conjunction with schedulers to adjust the learning rate over time.
 export MOMENTUM=0.937
 export WEIGHT_DECAY=0.0005
-export WARMUP_EPOCHS=3
+export WARMUP_EPOCHS=1
 export WARMUP_MOMENTUM=0.8
 export WARMUP_BIAS_LEARNING_RATE=0.1
 export BOX_LOSS_WEIGHT=7.5
@@ -45,5 +46,5 @@ export MASK_RATIO=4
 export DROPOUT=0.0
 export VALIDATE=True
 export PLOTS=True
-export LOGGER=0 # 0, COMET_ML or CLEAR_ML
+export LOGGER=CLEAR_ML # 0, COMET_ML or CLEAR_ML
 
