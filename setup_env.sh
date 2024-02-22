@@ -1,18 +1,13 @@
 #!/bin/bash
 
-source "${PROJECT_DIR}/config.sh"
-
 # check if ultrralytics is installed
 if ! [ -x "$(command -v ultralytics)" ]; then
     echo "ultralytics is not installed. Installing ultralytics..."
     python3 -m pip install ultralytics
 fi 
 
-# Check if python-dotenv is installed
-if ! python3 -c "import dotenv" 2>/dev/null; then
-    echo "python-dotenv is not installed. Installing..."
-    python3 -m pip install python-dotenv
-fi
+eval $(python3 "${PROJECT_DIR}/export_logger.py")
+
 # check if logger is CLEAR_ML
 if [ "$LOGGER" = "CLEAR_ML" ]; then
     # check if clearml is already configured
@@ -48,7 +43,13 @@ elif [ "$LOGGER" = "COMET_ML" ]; then
         pip install comet_ml
         echo "comet_ml is now installed"
     fi
-    
+
+    # Check if python-dotenv is installed
+    if ! python3 -c "import dotenv" 2>/dev/null; then
+        echo "python-dotenv is not installed. Installing..."
+        python3 -m pip install python-dotenv
+    fi
+
     # check if comet_ml is already configured
     if [ -z "$COMET_ML_IS_CONFIGURED" ]; then
         echo "configuring env for Comet ML..."
