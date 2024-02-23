@@ -1,6 +1,27 @@
 #!/bin/bash
 
-python3 -m ensurepip
+# Check if pip is installed by trying to invoke pip via Python
+if python3 -m pip -V >/dev/null 2>&1; then
+    echo "pip is already installed."
+else
+    echo "pip not found, checking OS..."
+
+    # Check for Debian/Ubuntu and install pip using apt-get
+    if [ -f /etc/debian_version ]; then
+            echo "Attempting to install pip using apt-get..."
+            sudo apt-get update
+            sudo apt-get install -y python3-pip
+    else
+        python3 -m ensurepip
+        python3 -m pip install --upgrade pip
+    fi
+
+    if python3 -m pip -V >/dev/null 2>&1; then
+        echo "pip has been successfully installed."
+    else
+        echo "Failed to install pip. Please manually install pip."
+    fi
+fi
 
 # check if ultrralytics is installed
 if ! [ -x "$(command -v ultralytics)" ]; then
