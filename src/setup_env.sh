@@ -28,6 +28,8 @@ if ! [ -x "$(command -v ultralytics)" ]; then
     python3 -m pip install ultralytics
 fi 
 
+yolo settings datasets_dir="${PROJECT_DIR}/datasets"
+
 eval $(python3 "${PROJECT_DIR}/src/export_logger.py")
 
 # check if logger is CLEAR_ML
