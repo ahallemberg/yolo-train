@@ -1,5 +1,7 @@
 #!/bin/bash
 
+python3 -m ensurepip
+
 # check if ultrralytics is installed
 if ! [ -x "$(command -v ultralytics)" ]; then
     echo "ultralytics is not installed. Installing ultralytics..."
@@ -40,7 +42,7 @@ elif [ "$LOGGER" = "COMET_ML" ]; then
     # check if comet_ml is installed pip
     if ! [ -x "$(command -v comet)" ]; then
         echo "comet_ml is not installed. Installing comet_ml..."
-        pip install comet_ml
+        python3 -m pip install comet_ml
         echo "comet_ml is now installed"
     fi
 
