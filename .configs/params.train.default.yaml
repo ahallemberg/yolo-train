@@ -1,7 +1,7 @@
 logger: 0
-weights: yolov8n.pt
+weights: models/yolov8n.pt
 params: 
-  data:   
+  data: data/data.yaml  
   epochs: 100
   time: 
   patience: 100

@@ -1,9 +1,7 @@
 logger: 0
-weights: yolov8n.pt
+weights: models/yolov8n.pt
 params: 
-  iterations: 100 
-  use_ray: False
-  data:   
+  data: data/data.yaml  
   epochs: 100
   time: 
   patience: 100
@@ -14,7 +12,7 @@ params:
   cache: False
   device: 
   workers: 8
-  project: runs/tune/
+  project: runs/train/
   name: exp1
   exist_ok: False
   pretrained: True 

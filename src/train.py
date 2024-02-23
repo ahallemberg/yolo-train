@@ -5,7 +5,7 @@ from logger import get_logger
 
 def main():
     # setup environment
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
     # setup logger 
     logger = get_logger()

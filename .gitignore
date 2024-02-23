@@ -1,4 +1,3 @@
-clearml.conf
 dataset/**
 runs/**
 models/**

@@ -6,7 +6,7 @@ if ! [ -x "$(command -v ultralytics)" ]; then
     python3 -m pip install ultralytics
 fi 
 
-eval $(python3 "${PROJECT_DIR}/export_logger.py")
+eval $(python3 "${PROJECT_DIR}/src/export_logger.py")
 
 # check if logger is CLEAR_ML
 if [ "$LOGGER" = "CLEAR_ML" ]; then
