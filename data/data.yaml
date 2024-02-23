@@ -1,7 +1,0 @@
-path: /home/askhb/ascend/yolov8/datasets/coco128  # path to dataset
-train: /home/askhb/ascend/yolov8/datasets/coco128# path to train files # path to train files (rel)
-val: # path to val files (rel)
-
-names:
-  0: standard 
-  1: emergent
