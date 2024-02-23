@@ -9,7 +9,6 @@ else
     # Check for Debian/Ubuntu and install pip using apt-get
     if [ -f /etc/debian_version ]; then
             echo "Attempting to install pip using apt-get..."
-            sudo apt-get update
             sudo apt-get install -y python3-pip
     else
         python3 -m ensurepip

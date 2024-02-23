@@ -1,9 +1,6 @@
 # yolov8-train
 yolov8-train
 
-
-https://github.com/ultralytics/ultralytics/blob/main/ultralytics/cfg/default.yaml
-
 ## usage
 source train.sh in a new session for each training iteration
 
