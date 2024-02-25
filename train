@@ -1,0 +1,63 @@
+#!/bin/bash
+export PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+
+create_venv=false
+tuning=false
+reset=false
+
+get_options(){
+  TEMP=$(getopt --long venv,tune,reset -n 'train' -- "$@")
+  if [ $? != 0 ]; then echo "Terminating..." >&2; exit 1; fi
+
+    # Note the quotes around `$TEMP`: they are essential!
+    eval set -- "$TEMP"
+
+    # Extract options and their arguments into variables.
+    while true; do
+        case "$1" in
+            -v|--venv)
+                create_venv=true
+                shift
+                ;;
+            -r|--reset)
+                reset=true
+                shift
+                ;;
+            -t|--tune)
+                tuning=true
+                shift
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                echo "Internal error!"
+                exit 1
+                ;;
+        esac
+    done
+
+    echo "Remaining arguments:"
+    for arg do echo '--> '"\`$arg'" ; done
+}
+
+get_options "$@"
+
+if [ "$reset" = true ]; then
+    cp "${PROJECT_DIR}/.default/train.yaml" "${PROJECT_DIR}/params/train.yaml"
+    cp "${PROJECT_DIR}/.default/tune.yaml" "${PROJECT_DIR}/params/tune.yaml"
+    cp "${PROJECT_DIR}/.default/data.yaml" "${PROJECT_DIR}/datasets/data.yaml"
+fi
+
+export CREATE_VENV=$create_venv 
+
+if [ "$tuning" = true ]; then
+    export TASK=tune
+else
+    export TASK=train
+fi
+
+source "${PROJECT_DIR}/src/setup_env.sh"
+python3 "${PROJECT_DIR}/src/train.py"
+source "${PROJECT_DIR}/src/cleanup_env.sh"

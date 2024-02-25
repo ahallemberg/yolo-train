@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# create venv
+if [ "$CREATE_VENV" = true ]; then
+    echo "Creating virtual environment..."
+    python3 -m venv "${PROJECT_DIR}/venv"
+    source "${PROJECT_DIR}/venv/bin/activate"
+    echo "Virtual environment created"
+fi
+
 # Check if pip is installed by trying to invoke pip via Python
 if python3 -m pip -V >/dev/null 2>&1; then
     echo "pip is already installed."
@@ -98,3 +106,4 @@ if [ "$LOGGER" != "COMET_ML" ]; then
     export COMET_AUTO_LOG_DISABLE=1 # disable comet auto logging
     yolo settings comet=False
 fi
+
