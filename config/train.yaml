@@ -1,4 +1,4 @@
-logger: 0
+logger: WANDB
 weights: models/yolov8n.pt
 params: 
   # Train settings -------------------------------------------------------------------------------------------------------

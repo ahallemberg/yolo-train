@@ -37,6 +37,17 @@ class CometLogger(Logger):
 
     def connect(self, args: dict[str, Any]):
         self.experiment.log_parameters(args)
+
+class WANDBLogger(Logger):
+    def __init__(self, lib):
+        self.lib = lib
+        self.id = self.get_id()
+        
+    def setup(self):
+        pass
+
+    def connect(self, args: dict[str, Any]):
+        self.lib.log(args)
         
 def get_logger() -> Logger | None:
     logger = os.getenv("LOGGER")

@@ -30,6 +30,13 @@ else
     fi
 fi
 
+if [ "$(python3 "${PROJECT_DIR}/src/use_ray.py")" = "1" ]; then
+    # Check if Ray Tune is installed
+    if ! python3 -m pip show ray > /dev/null 2>&1; then
+        python3 -m pip install "ray[tune]"
+    fi
+fi
+
 # check if ultrralytics is installed
 if ! [ -x "$(command -v ultralytics)" ]; then
     echo "ultralytics is not installed. Installing ultralytics..."
@@ -38,8 +45,8 @@ fi
 
 yolo settings datasets_dir="${PROJECT_DIR}/datasets"
 
-eval $(python3 "${PROJECT_DIR}/src/export_logger.py")
-
+eval "$(python3 "${PROJECT_DIR}/src/export_logger.py")"
+echo "$(python3 "${PROJECT_DIR}/src/export_logger.py")"
 # check if logger is CLEAR_ML
 if [ "$LOGGER" = "CLEAR_ML" ]; then
     # check if clearml is already configured
@@ -94,6 +101,15 @@ elif [ "$LOGGER" = "COMET_ML" ]; then
         echo "Comet ML env is configured"
     fi
 
+elif [ "$LOGGER" = "WANDB" ]; then
+    yolo settings wandb=True
+    # check if wandb is installed pip
+    if ! [ -x "$(command -v wandb)" ]; then
+        echo "wandb is not installed. Installing wandb..."
+        python3 -m pip install wandb
+        echo "wandb is now installed"
+    fi
+
 else
     echo "No logger is set. Skipping logger configuration..."
 fi
@@ -107,3 +123,6 @@ if [ "$LOGGER" != "COMET_ML" ]; then
     yolo settings comet=False
 fi
 
+if [ "$LOGGER" != "WANDB" ]; then
+    yolo settings wandb=False
+fi

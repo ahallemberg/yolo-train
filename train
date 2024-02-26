@@ -9,10 +9,8 @@ get_options(){
   TEMP=$(getopt --long venv,tune,reset -n 'train' -- "$@")
   if [ $? != 0 ]; then echo "Terminating..." >&2; exit 1; fi
 
-    # Note the quotes around `$TEMP`: they are essential!
     eval set -- "$TEMP"
 
-    # Extract options and their arguments into variables.
     while true; do
         case "$1" in
             -v|--venv)

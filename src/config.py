@@ -24,7 +24,7 @@ class Config():
             self._initialized = True
 
     def load_params(self, base_name: str, required: list[str]):
-        target_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "params", base_name))
+        target_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "config", base_name))
         with open(target_file, 'r') as f:
             data = yaml.safe_load(f)
             self.params = data["params"]
