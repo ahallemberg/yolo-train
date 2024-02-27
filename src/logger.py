@@ -64,20 +64,21 @@ class WANDBLogger(Logger):
         
 def get_logger() -> Logger | None:
     logger = os.getenv("LOGGER")
-    match logger:
-        case "CLEAR_ML":
-            from clearml import Task
-            return ClearMLLogger(Task)
+    
+    if logger == "CLEAR_ML":
+        from clearml import Task
+        return ClearMLLogger(Task)
+    
+    elif logger == "COMET_ML":
+        import comet_ml
+        return CometLogger(comet_ml)
+    
+    elif logger == "WANDB":
+        import wandb
 
-        case "COMET_ML":
-            import comet_ml 
-            return CometLogger(comet_ml)
-        
-        case "WANDB":
-            import wandb
-            return WANDBLogger(wandb)
-
-        case "0":
-            return None
-        case _:
-            raise ValueError(f"Invalid value for env varable LOGGER: {logger}")
+        return WANDBLogger(wandb)
+    elif logger == "0":
+        return None
+    
+    else:
+        raise ValueError(f"Invalid value for env varable LOGGER: {logger}")
