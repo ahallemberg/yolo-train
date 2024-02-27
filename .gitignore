@@ -1,6 +1,8 @@
-dataset/**
 runs/**
-models/**
+weights/**
+wandb/**
+datasets/** 
+!datasets/data.yaml
 .env 
 
 # Byte-compiled / optimized / DLL files

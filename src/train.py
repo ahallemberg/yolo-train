@@ -6,16 +6,17 @@ from logger import get_logger
 def main():
     # setup environment
     os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+    
+    # Load a model
+    model = YOLO(cfg.weights)  
 
     # setup logger 
     logger = get_logger()
     if logger: 
         logger.setup()
-        logger.connect(cfg.params)
+        logger.connect(cfg.params, model)
 
-    # Load a model
-    model = YOLO(cfg.weights)  
-
+  
     # train/tune model with the configurations
     task = os.getenv("TASK")
     if task == "tune":
