@@ -1,5 +1,5 @@
 import os
-from typing import Any
+from typing import Any, Union
 from abc import ABC, abstractmethod
 from config import cfg
 import secrets
@@ -62,7 +62,7 @@ class WANDBLogger(Logger):
         self.lib.finish()
 
         
-def get_logger() -> Logger | None:
+def get_logger() -> Union[None, Logger]:
     logger = os.getenv("LOGGER")
 
     if logger == "CLEAR_ML":
