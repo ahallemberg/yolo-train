@@ -6,20 +6,24 @@
 
 #### Comet ML 
 Setup a .env file with the COMET_ML api key if you want to use comet<br/>
-COMET_API_KEY=<br/>
+```
+COMET_API_KEY=YOUR_API_KEY
+```
 
 #### ClearML 
-Setup a clearml.conf file with configs if you want to use clearml. This needs to be at home dir level. ~/clearml.conf<br />
+Setup a clearml.conf file with configs found on the clearml website if you want to use clearml. This needs to be at home dir level. ~/clearml.conf<br />
 
 #### Weight and Biases
 Create a file called ~/.netrc that looks like this<br />
 
-machine api.wandb.ai<br />
-&nbsp;&nbsp;&nbsp;&nbsp;login user<br />
-&nbsp;&nbsp;&nbsp;&nbsp;password API_KEY<br />
+```
+machine api.wandb.ai
+    login user
+    password YOUR_API_KEY
+```
 
 ### Config
-To change training params, edit the yaml file config/train.yaml, or config/tune.yaml for tuning
+To change training configurations, edit the yaml file config/train.yaml, or config/tune.yaml for tuning
 
 ### Dataset 
 Move training dataset(s) to the datasets folder
