@@ -64,7 +64,7 @@ class WANDBLogger(Logger):
         
 def get_logger() -> Logger | None:
     logger = os.getenv("LOGGER")
-    
+
     if logger == "CLEAR_ML":
         from clearml import Task
         return ClearMLLogger(Task)
@@ -75,8 +75,8 @@ def get_logger() -> Logger | None:
     
     elif logger == "WANDB":
         import wandb
-
         return WANDBLogger(wandb)
+    
     elif logger == "0":
         return None
     
