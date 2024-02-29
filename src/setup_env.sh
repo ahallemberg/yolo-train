@@ -1,18 +1,10 @@
 #!/bin/bash
 
-# create venv
-if [ "$CREATE_VENV" = true ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv "${PROJECT_DIR}/.venv"
-    source "${PROJECT_DIR}/.venv/bin/activate"
-    echo "Virtual environment created"
-fi
-
 # Check if pip is installed by trying to invoke pip via Python
 if python3 -m pip -V >/dev/null 2>&1; then
     echo "pip is already installed."
 else
-    echo "pip not found, checking OS..."
+    echo "pip not found. Attempting to install pip..."
 
     # Check for Debian/Ubuntu and install pip using apt-get
     if [ -f /etc/debian_version ]; then
@@ -28,6 +20,33 @@ else
     else
         echo "Failed to install pip. Please manually install pip."
     fi
+fi
+
+# create venv
+if [ "$CREATE_VENV" = true ]; then
+    echo "Creating virtual environment..."
+    # check if venv is installed
+    if ! python3 -m venv --help > /dev/null 2>&1; then
+        echo "venv is not installed. Installing venv..."
+        if [ -f /etc/debian_version ]; then
+            echo "Attempting to install venv using apt-get..."
+            sudo apt-get install -y python3-venv
+        else
+            python3 -m pip install venv
+        fi
+
+        if ! python3 -m venv --help > /dev/null 2>&1; then
+            echo "Failed to install venv. Please manually install venv."
+            exit 1
+        
+        else 
+            echo "venv is now installed"
+        fi
+    fi
+    
+    python3 -m venv "${PROJECT_DIR}/.venv"
+    source "${PROJECT_DIR}/.venv/bin/activate"
+    echo "Virtual environment created"
 fi
 
 # Check if PyYAML is installed
