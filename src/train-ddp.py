@@ -6,10 +6,11 @@ from logger import get_logger
 
 
 def main():
+    print("WORKKKKING")
     # Initialize the distributed environment.
     dist.init_process_group(
-        backend='nccl',
         init_method='env://',
+        backend=os.getenv("BACKEND")
     )
 
     # setup environment

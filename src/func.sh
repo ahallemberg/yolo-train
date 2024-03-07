@@ -70,11 +70,12 @@ help_ddp_options() {
     echo "  --node_rank        Rank of the node"
     echo "  --master_addr      IP address of the master node"
     echo "  --master_port      Port of the master node"
+    echo "  --backend          Backend to use (nccl, gloo, mpi)"
     exit 1
 }
 
 get_ddp_options(){
-    TEMP=$(getopt -o vrt --long venv,reset,tune,nproc_per_node:,nnodes:,node_rank:,master_addr:,master_port: -n 'train-ddp' -- "$@")    
+    TEMP=$(getopt -o vrt --long venv,reset,tune,nproc_per_node:,nnodes:,node_rank:,master_addr:,master_port:,backend: -n 'train-ddp' -- "$@")    
     if [ $? != 0 ]; then echo "Terminating..." >&2; exit 1; fi
 
     eval set -- "$TEMP"
@@ -113,6 +114,10 @@ get_ddp_options(){
                 export MASTER_PORT=$2
                 shift 2
                 ;;
+            --backend)
+                export BACKEND=$2
+                shift 2
+                ;;
             --)
                 shift
                 break
@@ -125,13 +130,14 @@ get_ddp_options(){
 
     set_options
 
-    if [ -z "$NPROC_PER_NODE" ] || [ -z "$NNODES" ] || [ -z "$NODE_RANK" ] || [ -z "$MASTER_ADDR" ] || [ -z "$MASTER_PORT" ]; then
+    if [ -z "$NPROC_PER_NODE" ] || [ -z "$NNODES" ] || [ -z "$NODE_RANK" ] || [ -z "$MASTER_ADDR" ] || [ -z "$MASTER_PORT" ] || [ -z "$BACKEND" ]; then
         echo "Error: All of the following options must be provided:"
         echo "--nproc_per_node"
         echo "--nnodes"
         echo "--node_rank"
         echo "--master_addr"
         echo "--master_port"
+        echo "--backend"
         exit 1
     fi
 }
