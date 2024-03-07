@@ -47,7 +47,7 @@ Execute file
 ### DDP 
 Execute file on each node with the correct options
 ```
-./train-ddp -nproc_per_node 1 --nnodes 2 --node_rank 0 --master_addr "10.0.20.1" --master_port 8456
+./train-ddp --nproc_per_node 1 --nnodes 2 --node_rank 0 --master_addr "10.0.20.1" --master_port 8456
 ```
 
 

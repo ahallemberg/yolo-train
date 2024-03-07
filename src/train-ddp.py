@@ -23,7 +23,7 @@ def main():
     logger = get_logger()
     if logger: 
         logger.setup()
-        logger.connect(cfg.params, model.module)
+        logger.connect(cfg.params, model)
   
     # train/tune model with the configurations
     task = os.getenv("TASK")
