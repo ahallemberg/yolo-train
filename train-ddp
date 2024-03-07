@@ -1,81 +1,30 @@
 #!/bin/bash
 export PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
-create_venv=false
-tuning=false
-reset=false
+echo $#
+source "${PROJECT_DIR}/src/func.sh"
 
-help (){
-    echo "Usage: train [OPTIONS]"
-    echo "Options:"
-    echo "  -v, --venv   Create a virtual environment"
-    echo "  -t, --tune   Tune the model"
-    echo "  -r, --reset  Reset the parameters to default"
-    exit 1
-}
-
-get_options(){
-  TEMP=$(getopt -o vrt --long venv,tune,reset -n 'train' -- "$@")
-  if [ $? != 0 ]; then echo "Terminating..." >&2; exit 1; fi
-
-    eval set -- "$TEMP"
-
-    while true; do
-        case "$1" in
-            -v|--venv)
-                create_venv=true
-                shift
-                ;;
-            -r|--reset)
-                reset=true
-                shift
-                ;;
-            -t|--tune)
-                tuning=true
-                shift
-                ;;
-            --)
-                shift
-                break
-                ;;
-            *)
-                help
-                ;;
-        esac
-    done
-}
-
-get_options "$@"
-
-if [ "$reset" = true ]; then
-    echo "Resetting parameters to default..."
-    cp "${PROJECT_DIR}/.default/train.yaml" "${PROJECT_DIR}/config/train.yaml"
-    cp "${PROJECT_DIR}/.default/tune.yaml" "${PROJECT_DIR}/config/tune.yaml"
-    cp "${PROJECT_DIR}/.default/data.yaml" "${PROJECT_DIR}/datasets/data.yaml"
-    exit
-fi
-
-export CREATE_VENV=$create_venv 
-
-if [ "$tuning" = true ]; then
-    export TASK=tune
-else
-    export TASK=train
-fi
+# Call get_ddp_options with the remaining arguments
+get_ddp_options "$@"
 
 echo "Create venv:" $CREATE_VENV
 echo "Task:" $TASK
+echo "NPROC_PER_NODE: $NPROC_PER_NODE"
+echo "NNODES: $NNODES"
+echo "NODE_RANK: $NODE_RANK"
+echo "MASTER_ADDR: $MASTER_ADDR"
+echo "MASTER_PORT: $MASTER_PORT"
 
-trap "source ${PROJECT_DIR}/src/cleanup_env.sh" EXIT
+trap cleanup_env EXIT
 
 source "${PROJECT_DIR}/src/setup_env.sh"
 
-python3 -m torch.distributed.run \
-    --nproc_per_node=4 \
-    --nnodes=2 \
-    --node_rank=0 \
-    --master_addr="master_node_ip" \
-    --master_port=12345 \
-    "${PROJECT_DIR}/src/train.py" 
+torchrun \
+    --nproc_per_node="$NPROC_PER_NODE"\
+    --nnodes="$NNODES" \
+    --node_rank="$NODE_RANK" \
+    --master_addr="$MASTER_ADDR" \
+    --master_port="$MASTER_PORT" \
+    "${PROJECT_DIR}/src/train-ddp.py" 
 
-source "${PROJECT_DIR}/src/cleanup_env.sh"
+cleanup_env

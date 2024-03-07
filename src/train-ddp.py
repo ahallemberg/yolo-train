@@ -1,25 +1,25 @@
 import os
-import torch
 import torch.distributed as dist
 from ultralytics import YOLO
 from config import cfg
 from logger import get_logger
 
+
 def main():
     # Initialize the distributed environment.
-    dist.init_process_group(backend='nccl')
-    local_rank = torch.distributed.get_rank()
-    torch.cuda.set_device(local_rank)
-    
+    dist.init_process_group(
+        backend='nccl',
+        init_method='env://',
+    )
+
     # setup environment
     os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
     
     # Load and wrap the model for DDP
     model = YOLO(cfg.weights)
-    model.cuda(local_rank)
-    model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[local_rank], output_device=local_rank)
-    
-    # setup logger 
+
+
+    # setup logger s
     logger = get_logger()
     if logger: 
         logger.setup()
@@ -28,9 +28,9 @@ def main():
     # train/tune model with the configurations
     task = os.getenv("TASK")
     if task == "tune":
-        model.module.tune(**cfg.params)
+        model.tune(**cfg.params)
     elif task == "train":
-        model.module.train(**cfg.params) 
+        model.train(**cfg.params) 
     else: 
         raise RuntimeError("Invalid task")
 

@@ -1,4 +1,4 @@
-# yolov8-train
+# yolo-train
 
 ## Setup 
 
@@ -28,23 +28,36 @@ To change training configurations, edit the yaml file config/train.yaml, or conf
 ### Dataset 
 Move training dataset(s) to the datasets folder
 
-## Usage
+## Usage 
+### Train
 Make train file executable
-```
-chmod +x train 
-```
 
 Execute file
 ```
 ./train
 ```
 
-### Options
+#### Options
 ```
--v|--venv (to train in a new venv)
--t|--tune (to tune insted of standard training)
--r|--reset (to reset config to default)
+-v|--venv   (to train in a new venv)
+-t|--tune   (to tune insted of standard training)
+-r|--reset  (to reset config to default)
 ```
 
+### DDP 
+Execute file on each node with the correct options
+```
+./train-ddp -nproc_per_node 1 --nnodes 2 --node_rank 0 --master_addr "10.0.20.1" --master_port 8456
+```
+
+
+#### Required options
+```
+--nproc_per_node  (The number of processes to run on each node)
+--nnodes          (The total number of nodes)
+--node_rank       (The rank of the current node)
+--master_addr     (The address of the master node)
+--master_port     (The port of the master node)
+```
 
 
